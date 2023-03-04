@@ -1,0 +1,19 @@
+name: cancerapp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - git
+  - gitdb
+  - jupyter
+  - jupyterlab
+  - jupyterlab-git
+  - matplotlib
+  - numpy
+  - flask
+  - nodejs
+  - pandas
+  - pip
+  - seaborn
+  - scikit-learn
+  - streamlit
