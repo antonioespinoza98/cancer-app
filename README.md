@@ -23,3 +23,19 @@ Luego deben crear un ambiente, para eso, el proyecto viene con un archivo `.yml`
 ```
 conda env create -f config.yml
 ```
+Una vez que el ambiente se haya creado utilizamos 
+
+```
+conda activate cancerapp
+```
+
+para desactivarlo
+
+```
+conda deactivate cancerapp
+```
+Para actualizar el [ambiente](https://stackoverflow.com/questions/42352841/how-to-update-an-existing-conda-environment-with-a-yml-file)
+```
+conda activate myenv
+conda env update --file local.yml --prune
+```
