@@ -29,13 +29,16 @@ Una vez que el ambiente se haya creado utilizamos
 conda activate cancerapp
 ```
 
-para desactivarlo
+para desactivar el ambiente
 
 ```
 conda deactivate cancerapp
 ```
 Para actualizar el [ambiente](https://stackoverflow.com/questions/42352841/how-to-update-an-existing-conda-environment-with-a-yml-file)
 ```
-conda activate myenv
-conda env update --file local.yml --prune
+conda activate cancerapp
+conda env update --file config.yml --prune
 ```
+# Arquitectura actual
+
+![flow](imagenes/flow.png)

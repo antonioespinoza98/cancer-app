@@ -1,0 +1,5 @@
+api key: AIzaSyDngNDUAo-A7DqdzTfD3e_UrAM8EcEcaFQ
+client: 1000712589072-3rivh28tu0aj0sp4i79rug5vtlgvfooh.apps.googleusercontent.com
+client secret: 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
+
+email: tcuserviceaccount@cancerapp-379721.iam.gserviceaccount.com
