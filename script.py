@@ -8,8 +8,8 @@ myclient = gspread.authorize(mycreds)
 
 mysheet = myclient.open("cancer").worksheet('hoja1')
 
-data = mysheet.get_all_records()
 
-row = mysheet.row_values(3)
+# Deberíamos de utilizar nombres específicos para todos los scripts
+# por ejemplo para traer los datos debería ser {causa}_{enfermedad}_{edad}, entonces debería de ser: mort_cancer_edad
 
-print(row)
+mort_cancer_edad = mysheet.get_all_records()
