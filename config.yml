@@ -1,14 +1,14 @@
 name: cancerapp
 channels:
   - defaults
+  - conda-forge
 dependencies:
-  - python=3.8
+  - python=3.9
   - git
   - matplotlib
   - numpy
   - Flask
-  - pandas
   - pip
-  - seaborn
   - streamlit
-#  - folium
+  - folium
+  - streamlit-folium
