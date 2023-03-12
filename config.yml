@@ -6,6 +6,8 @@ dependencies:
   - python=3.9
   - git
   - Flask
+  - gspread
+  - oauth2client
   - pip
   - streamlit=1.10.0
   - folium
