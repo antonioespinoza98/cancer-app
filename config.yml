@@ -5,10 +5,8 @@ channels:
 dependencies:
   - python=3.9
   - git
-  - matplotlib
-  - numpy
   - Flask
   - pip
-  - streamlit
+  - streamlit=1.10.0
   - folium
   - streamlit-folium
