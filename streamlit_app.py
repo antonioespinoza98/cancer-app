@@ -9,5 +9,6 @@ def main():
     st.title('Datos de Cáncer')
     st.caption('Proyecto 4.1: Trabajo Comunitario Universitario 758')
     mapa =  trans.desplegar_mapa()
+    st.dataframe(trans.cancer_edad)
 if __name__ == "__main__":
     main()
