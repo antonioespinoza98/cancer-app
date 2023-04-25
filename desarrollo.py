@@ -27,17 +27,26 @@ def desplegar_canton(df, func_mapa):
     
 # Filtro para localización anatómica
 def desplegar_zona(df):
-    lista_zona = [''] + list(df['LOCALIZACION'].unique())
+    lista_zona = ['TODAS'] + list(df['LOCALIZACION'].unique())
     return st.sidebar.selectbox('Localización', lista_zona)
 
 # Filtro para sexo
 def desplegar_sexo(df):
-    lista_sexo = [''] + list(df['SEXO'].unique())
-    return st.sidebar.selectbox('Sexo', lista_sexo)
+    lista_sexo = ['TODOS'] + list(df['SEXO'].unique())
+    return st.sidebar.radio('Sexo', lista_sexo,0)
+    
 
 # Función del mapa
-def desplegar_mapa(df, func_ano):
-    df = df[df['ANO'] == func_ano]
+def desplegar_mapa(df, func_ano, func_sexo, func_localizacion):
+    df = df[(df['ANO'] == func_ano)]
+    if func_sexo=='TODOS':
+        df = df
+    else: 
+        df = df[(df['SEXO']==func_sexo)]
+    if func_localizacion=='TODAS':
+        df = df
+    else: 
+        df = df[(df['LOCALIZACION']==func_localizacion)]
     mapa = folium.Map(location=[9.748917, -83.753428], zoom_start=7.2, scrollWheelZoom = False, titles = 'Carto')
     choropleth = folium.Choropleth(
          geo_data='cantones.geojson',
@@ -55,7 +64,14 @@ def desplegar_mapa(df, func_ano):
    
     for feature in choropleth.geojson.data["features"]:
         canton =feature["properties"]["Canton"]
-        feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton,"INCIDENCIA"][0])
+        if ((func_sexo!='TODOS') and  (func_localizacion!='TODAS')):
+            # If it's a single integer, convert it to a string
+            feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])
+        else:
+            # If it's a list of integers, add them up and convert the result to a string
+            feature["properties"]["Provincia"] = "Casos : " + str(sum(df.loc[canton, "INCIDENCIA"]))
+
+        
 
     choropleth.geojson.add_child(
         folium.features.GeoJsonTooltip(["Canton","Provincia"],labels = False)
