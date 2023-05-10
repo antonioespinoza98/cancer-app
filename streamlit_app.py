@@ -9,7 +9,21 @@ def main():
     st.title('Datos de Cáncer')
     st.caption('Proyecto 4.1: Trabajo Comunitario Universitario 758')
     tiempo = desarrollo.desplegar_fecha(desarrollo.incidencia)
-    mapa = desarrollo.desplegar_mapa(desarrollo.incidencia, tiempo)
-    mapa = desarrollo.desplegar_canton(desarrollo.incidencia, mapa)
+    sexo = desarrollo.desplegar_sexo(desarrollo.incidencia)
+    localizacion = desarrollo.desplegar_zona(desarrollo.incidencia)
+    mapa = desarrollo.desplegar_mapa(desarrollo.incidencia, tiempo, sexo, localizacion)
+    canton = desarrollo.desplegar_canton(desarrollo.incidencia, mapa)
+
+        #Display Metrics
+    st.subheader(f'Datos de incidencia en {canton}')
+
+    col1, col2, col3 = st.columns([1, 2.5, 4])
+    with col1:
+        desarrollo.desplegar_datos(desarrollo.incidencia, tiempo, sexo, canton, localizacion, '# de casos')
+    with col2:
+        desarrollo.desplegar_datos(desarrollo.incidencia, tiempo, sexo, canton, localizacion, "Porcentaje del total de casos del país")
+    with col3:
+        desarrollo.desplegar_datos(desarrollo.incidencia, tiempo, sexo, canton, localizacion, "Porcentaje del total de casos en la localización: " + str(localizacion)) 
+
 if __name__ == "__main__":
     main()
