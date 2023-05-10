@@ -117,7 +117,7 @@ def desplegar_datos(df, func_ano, func_sexo, canton, func_localizacion, title):
         else:
             total = (sum(df["INCIDENCIA"]) / sum(df_total["INCIDENCIA"]) *100)
         st.metric(title, str(round(total,ndigits=2)))
-    elif title == "Porcentaje de casos de cáncer en " + str(func_localizacion) + " en el país":
+    elif title == "Porcentaje del total de casos en la localización: " + str(func_localizacion):
         if ((func_sexo!='TODOS') and  (func_localizacion!='TODAS')):
             total= (sum(df["INCIDENCIA"]) / sum(df_localizacion["INCIDENCIA"]) *100)
         else:
