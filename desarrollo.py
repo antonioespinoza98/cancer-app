@@ -20,24 +20,34 @@ def desplegar_fecha(df):
 
 # Desplegar filtro para el canton
 def desplegar_canton(df, func_mapa):
-    lista_canton = [''] + list(df['CANTON'].unique())
+    lista_canton = list(df['CANTON'].unique())
     lista_canton.sort()
+    lista_canton = ["COSTA RICA"] + lista_canton
     canton_index = lista_canton.index(func_mapa) if func_mapa and func_mapa in lista_canton else 0
     return st.sidebar.selectbox('CANTON', lista_canton, canton_index)
     
 # Filtro para localización anatómica
 def desplegar_zona(df):
-    lista_zona = [''] + list(df['LOCALIZACION'].unique())
+    lista_zona = ['TODAS'] + list(df['LOCALIZACION'].unique())
     return st.sidebar.selectbox('Localización', lista_zona)
 
 # Filtro para sexo
 def desplegar_sexo(df):
-    lista_sexo = [''] + list(df['SEXO'].unique())
-    return st.sidebar.selectbox('Sexo', lista_sexo)
+    lista_sexo = ['TODOS'] + list(df['SEXO'].unique())
+    return st.sidebar.radio('Sexo', lista_sexo,0)
+    
 
 # Función del mapa
-def desplegar_mapa(df, func_ano):
-    df = df[df['ANO'] == func_ano]
+def desplegar_mapa(df, func_ano, func_sexo, func_localizacion):
+    df = df[(df['ANO'] == func_ano)]
+    if func_sexo=='TODOS':
+        df = df
+    else: 
+        df = df[(df['SEXO']==func_sexo)]
+    if func_localizacion=='TODAS':
+        df = df
+    else: 
+        df = df[(df['LOCALIZACION']==func_localizacion)]
     mapa = folium.Map(location=[9.748917, -83.753428], zoom_start=7.2, scrollWheelZoom = False, titles = 'Carto')
     choropleth = folium.Choropleth(
          geo_data='cantones.geojson',
@@ -55,10 +65,65 @@ def desplegar_mapa(df, func_ano):
    
     for feature in choropleth.geojson.data["features"]:
         canton =feature["properties"]["Canton"]
-        feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton,"INCIDENCIA"][0])
+        if(func_sexo=='FEMENINO') and  (func_localizacion=='PROSTATA'):
+            df.loc[canton, "INCIDENCIA"] = 0
+            feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])
+        elif(func_sexo=='MASCULINO') and  (func_localizacion=='MAMA'):
+            df.loc[canton, "INCIDENCIA"] = 0
+            feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])    
+        elif ((func_sexo!='TODOS') and  (func_localizacion!='TODAS')):
+            feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])
+        elif ((func_sexo=='TODOS') and  (func_localizacion=='PROSTATA')):
+            feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])
+        else:
+            feature["properties"]["Provincia"] = "Casos : " + str(sum(df.loc[canton, "INCIDENCIA"]))
+
+        
 
     choropleth.geojson.add_child(
         folium.features.GeoJsonTooltip(["Canton","Provincia"],labels = False)
     )
 
     st_map = st_folium(mapa, width=700, height=450)
+
+
+#Función de cuadro de datos
+def desplegar_datos(df, func_ano, func_sexo, canton, func_localizacion, title):
+    df = df[(df['ANO'] == func_ano)]
+    df_total = df
+    if func_localizacion=='TODAS':
+        df = df
+    else: 
+        df = df[(df['LOCALIZACION']==func_localizacion)]
+    df_localizacion = df
+    if canton == "COSTA RICA":
+        df = df
+    else:
+        df = df[(df['CANTON'] == canton)]
+    if func_sexo=='TODOS':
+        df = df
+    else: 
+        df = df[(df['SEXO']==func_sexo)]
+    df.drop_duplicates(inplace=True)
+    if title == "# de casos":
+        if ((func_sexo!='TODOS') and  (func_localizacion!='TODAS')):
+            total=  sum(df["INCIDENCIA"])
+        else:
+            total = sum(df["INCIDENCIA"])
+        st.metric(title, str(round(total)))
+    elif title == "Porcentaje del total de casos del país":
+        if ((func_sexo!='TODOS') and  (func_localizacion!='TODAS')):
+            total= (sum(df["INCIDENCIA"]) / sum(df_total["INCIDENCIA"]) *100)
+        else:
+            total = (sum(df["INCIDENCIA"]) / sum(df_total["INCIDENCIA"]) *100)
+        st.metric(title, str(round(total,ndigits=2)))
+    elif title == "Porcentaje del total de casos en la localización: " + str(func_localizacion):
+        if ((func_sexo!='TODOS') and  (func_localizacion!='TODAS')):
+            total= (sum(df["INCIDENCIA"]) / sum(df_localizacion["INCIDENCIA"]) *100)
+        else:
+            total = (sum(df["INCIDENCIA"]) / sum(df_localizacion["INCIDENCIA"]) *100)
+        st.metric(title, str(round(total,ndigits=2)))
+    if(func_sexo=='FEMENINO') and  (func_localizacion=='PROSTATA'):
+        total=0
+
+    
