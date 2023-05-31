@@ -6,7 +6,19 @@ import folium
 from streamlit_folium import st_folium
 import streamlit as st
 # Pasamos el archivo a un DataFrame de Pandas
-incidencia = pd.DataFrame(script.inc_cancer_canton)
+INCIDENCIA = pd.DataFrame(script.inc_cancer_canton)
+MORTALIDAD = pd.DataFrame(script.mort_cancer_canton)
+
+# Filtro para mortalidad o incidencia
+
+def desplegar_tipo_datos():
+    return st.sidebar.radio('TIPO DE DATOS', ['INCIDENCIA', 'MORTALIDAD'])
+
+def tipo(tipo):
+    if tipo == 'INCIDENCIA':
+        return INCIDENCIA
+    else:
+        return MORTALIDAD
 
 # Filtro para el año
 def desplegar_fecha(df):
