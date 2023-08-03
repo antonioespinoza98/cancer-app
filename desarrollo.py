@@ -81,25 +81,33 @@ def desplegar_mapa(df, func_ano, func_sexo, func_localizacion):
             df.loc[canton, "INCIDENCIA"] = 0
             feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])+ "Tasa de incidencia por 100 000 habitantes: " +  str(df.loc[canton, "TASA"])
             feature["properties"]["Dato"] = "Tasa de casos por 100 000 habitantes : " + str(round(df.loc[canton, "TASA"],2))        
+            feature["properties"]["Poblacion"] = "Población del cantón : " + str((df.loc[canton, "POBLACION"]))
         elif(func_sexo=='MASCULINO') and  (func_localizacion=='MAMA'):
             df.loc[canton, "INCIDENCIA"] = 0
             feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])    
             feature["properties"]["Dato"] = "Tasa de casos por 100 000 habitantes : " + str(round(df.loc[canton, "TASA"],2))
+            feature["properties"]["Poblacion"] = "Población del cantón : " + str((df.loc[canton, "POBLACION"]))
         elif ((func_sexo!='TODOS') and  (func_localizacion!='TODAS')):
             feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])
             feature["properties"]["Dato"] = "Tasa de casos por 100 000 habitantes : " + str(round(df.loc[canton, "TASA"],2))
+            feature["properties"]["Poblacion"] = "Población del cantón : " + str((df.loc[canton, "POBLACION"]))
         elif ((func_sexo=='TODOS') and  (func_localizacion=='PROSTATA')):
             feature["properties"]["Provincia"] = "Casos : " + str(df.loc[canton, "INCIDENCIA"])
             feature["properties"]["Dato"] = "Tasa de casos por 100 000 habitantes : " + str(round(df.loc[canton, "TASA"],2))    
+            feature["properties"]["Poblacion"] = "Población del cantón : " + str((df.loc[canton, "POBLACION"]))
         else:
             feature["properties"]["Provincia"] = "Casos : " + str(sum(df.loc[canton, "INCIDENCIA"]))
             feature["properties"]["Dato"] = "Tasa de casos por 100 000 habitantes : " + str(round(df.loc[canton, "TASA"],2))
+            feature["properties"]["Poblacion"] = "Población del cantón : " + str((df.loc[canton, "POBLACION"]))
+        if(func_localizacion=='TODAS'):
+            feature["properties"]["Poblacion"] = "Población del cantón : " + str(sum(df.loc[canton, "POBLACION"])/len(df.loc[canton, "POBLACION"]))
+            
        
 
         
 
     choropleth.geojson.add_child(
-        folium.features.GeoJsonTooltip(["Canton","Provincia","Dato"],labels = False)
+        folium.features.GeoJsonTooltip(["Canton","Provincia","Dato", "Poblacion"],labels = False)
     )
 
     st_map = st_folium(mapa, width=700, height=450)
