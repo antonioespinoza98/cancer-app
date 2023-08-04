@@ -99,9 +99,9 @@ def desplegar_mapa(df, func_ano, func_sexo, func_localizacion):
             feature["properties"]["Provincia"] = "Casos : " + str(sum(df.loc[canton, "INCIDENCIA"]))
             feature["properties"]["Dato"] = "Tasa de casos por 100 000 habitantes : " + str(round(df.loc[canton, "TASA"],2))
             feature["properties"]["Poblacion"] = "Población del cantón : " + str((df.loc[canton, "POBLACION"]))
-        if(func_localizacion=='TODAS'):
-            feature["properties"]["Poblacion"] = "Población del cantón : " + str(sum(df.loc[canton, "POBLACION"])/len(df.loc[canton, "POBLACION"]))
-            
+        if(func_localizacion=='TODAS' or (func_localizacion!='TODAS' and func_sexo=='TODOS')):
+            feature["properties"]["Poblacion"] = "Población del cantón : " + str(max(df.loc[canton, "POBLACION"])+min(df.loc[canton, "POBLACION"]))
+            feature["properties"]["Dato"] = "Tasa de casos por 100 000 habitantes : " + str(round(sum(df.loc[canton, "INCIDENCIA"])/(max(df.loc[canton, "POBLACION"])+min(df.loc[canton, "POBLACION"]))*100000,2))
        
 
         

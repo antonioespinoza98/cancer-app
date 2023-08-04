@@ -8,13 +8,8 @@ myclient = gspread.authorize(mycreds)
 
 mort_cant = myclient.open("cancer").worksheet('mortalidad')
 inc_cant = myclient.open("cancer").worksheet('incidencia')
-fondo = """
-<style>
-[data-testid]
-</style>
-"""
 
-# Deberíamos de utilizar nombres específicos para todos los scripts
+# Deberíamos de utilizar nombres específicos para todos los scripts.
 # por ejemplo para traer los datos debería ser {causa}_{enfermedad}_{edad}, entonces debería de ser: mort_cancer_edad
 
 mort_cancer_canton = mort_cant.get_all_records()
