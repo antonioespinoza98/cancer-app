@@ -25,7 +25,7 @@ def main():
     with col2:
         desarrollo.desplegar_datos(df, tiempo, sexo, canton, localizacion, "Porcentaje del total de casos del país")
     with col3:
-        desarrollo.desplegar_datos(df, tiempo, sexo, canton, localizacion, "Porcentaje del total de casos en la localización: " + str(localizacion)) 
+        desarrollo.desplegar_datos(df, tiempo, sexo, canton, localizacion, "Tasa de casos por cada 100 000 habitantes")
 
 if __name__ == "__main__":
     main()
