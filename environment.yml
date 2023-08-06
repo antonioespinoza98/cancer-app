@@ -5,10 +5,10 @@ channels:
 dependencies:
   - python=3.9
   - git
-  - Flask
   - gspread
   - oauth2client
-  - pip
+  - pandas
+  - folium
   - streamlit=1.10.0
   - folium
   - streamlit-folium
