@@ -9,6 +9,6 @@ dependencies:
   - gspread
   - oauth2client
   - pip
-  - streamlit=1.10.0
+  - streamlit
   - folium
   - streamlit-folium
