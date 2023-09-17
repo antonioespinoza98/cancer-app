@@ -1,4 +1,3 @@
-git
 gspread
 oauth2client
 pandas
